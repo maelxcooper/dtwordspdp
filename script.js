@@ -5,25 +5,57 @@ $(document).ready(function () {
 
       if (!inputHtml) {
     alert('No text input');
-    return; // stop processing
+    return; 
   }
     const container = $('<div></div>').html(inputHtml);
 
     // Tags to skip processing inside (for safety)
     const skipTags = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'CODE'];
 
-    function processTextNodes(node) {
-      node.childNodes.forEach(child => {
-        if (child.nodeType === Node.TEXT_NODE) {
-          // Add &nbsp; after 1-3 letter words, even at end of text
-          child.nodeValue = child.nodeValue.replace(/\b([a-zA-Z]{1,3})(\s|$)/g, (match, p1, p2) => {
-            return p1 + '\u00A0';
-          });
-        } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
-          processTextNodes(child);
+    // function processTextNodes(node) {
+    //   node.childNodes.forEach(child => {
+    //     if (child.nodeType === Node.TEXT_NODE) {
+    //       // Add &nbsp; after 1-3 letter words, even at end of text
+    //       child.nodeValue = child.nodeValue.replace(/\b([a-zA-Z]{1,3})(\s|$)/g, (match, p1, p2) => {
+    //         return p1 + '\u00A0';
+    //       });
+    //     } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
+    //       processTextNodes(child);
+    //     }
+    //   });
+    // }
+
+function processTextNodes(node) {
+  node.childNodes.forEach(child => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      child.nodeValue = child.nodeValue.replace(/\b([a-zA-Z']+)(\s?)/g, (match, word, space, offset, string) => {
+        const stripped = word.replace(/['’]/g, '');
+        if (stripped.length > 0 && stripped.length <= 3) {
+          // Check preceding char (if any)
+          const prevChar = offset > 0 ? string[offset - 1] : null;
+          // Check following char (the char after the match)
+          const nextChar = string[offset + match.length] || null;
+
+          // Skip if preceded or followed by hyphen (or dash)
+          if (prevChar === '-' || nextChar === '-') {
+            return match;
+          }
+          // Skip if word ends with apostrophe
+          if (/['’]$/.test(word)) {
+            return match;
+          }
+
+          return word + '\u00A0';
         }
+        return match;
       });
+    } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
+      processTextNodes(child);
     }
+  });
+}
+
+
 
     processTextNodes(container[0]);
 
