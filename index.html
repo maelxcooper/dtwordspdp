@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Short Word &nbsp; Inserter (Preserve HTML)</title>
+  <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+
+  <div class="section">
+    <label class="label">🔽 Input HTML:</label>
+    <textarea id="inputHtml" placeholder="Paste your HTML block here..."></textarea>
+  </div>
+
+  <button id="processBtn">✨ Process HTML</button>
+
+
+  <div class="section">
+    <label class="label">🔼 Output HTML (escaped):</label>
+    <div id="outputBox"></div>
+  </div>
+
+  <button id="copyBtn" style="display:none;">📋 Copy Output HTML</button>
+  <button id="clearBtn">🧹 Clear</button>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
