@@ -1,7 +1,12 @@
 $(document).ready(function () {
 
   $('#processBtn').on('click', function () {
-    const inputHtml = $('#inputHtml').val();
+    const inputHtml = $('#inputHtml').val().trim();
+
+      if (!inputHtml) {
+    alert('No text input');
+    return; // stop processing
+  }
     const container = $('<div></div>').html(inputHtml);
 
     // Tags to skip processing inside (for safety)
