@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
+:root {
+    --primaryFont: "Questrial", sans-serif;
+}
     body {
-      font-family: Arial, sans-serif;
+      font-family: var(--primaryFont);
       padding: 20px;
     }
     textarea {
