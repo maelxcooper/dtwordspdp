@@ -42,35 +42,64 @@ $(document).ready(function () {
 //   });
 // }
 
+// function processTextNodes(node) {
+//   node.childNodes.forEach(child => {
+//     if (child.nodeType === Node.TEXT_NODE) {
+//       child.nodeValue = child.nodeValue.replace(/\b([\p{L}']+)(\s?)/gu, (match, word, space, offset, string) => {
+//         const stripped = word.replace(/['’]/g, '');
+//         if (stripped.length > 0 && stripped.length <= 3) {
+//           // Check preceding char (if any)
+//           const prevChar = offset > 0 ? string[offset - 1] : null;
+//           // Check following char (the char after the match)
+//           const nextChar = string[offset + match.length] || null;
+
+//           // Skip if preceded or followed by hyphen (or dash)
+//           if (prevChar === '-' || nextChar === '-') {
+//             return match;
+//           }
+//           // Skip if word ends with apostrophe
+//           if (/['’]$/.test(word)) {
+//             return match;
+//           }
+
+//           return word + '\u00A0'; // keep any original space after
+//         }
+//         return match;
+//       });
+//     } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
+//       processTextNodes(child);
+//     }
+//   });
+// }
+
 function processTextNodes(node) {
   node.childNodes.forEach(child => {
     if (child.nodeType === Node.TEXT_NODE) {
-      child.nodeValue = child.nodeValue.replace(/\b([\p{L}']+)(\s?)/gu, (match, word, space, offset, string) => {
+      child.nodeValue = child.nodeValue.replace(/(^|\s)([\p{L}’']{1,3})\s+/gu, (match, leading, word, offset, string) => {
         const stripped = word.replace(/['’]/g, '');
-        if (stripped.length > 0 && stripped.length <= 3) {
-          // Check preceding char (if any)
-          const prevChar = offset > 0 ? string[offset - 1] : null;
-          // Check following char (the char after the match)
-          const nextChar = string[offset + match.length] || null;
 
-          // Skip if preceded or followed by hyphen (or dash)
-          if (prevChar === '-' || nextChar === '-') {
-            return match;
-          }
-          // Skip if word ends with apostrophe
-          if (/['’]$/.test(word)) {
-            return match;
-          }
+        if (stripped.length === 0 || stripped.length > 3) return match;
 
-          return word + '\u00A0'; // keep any original space after
-        }
-        return match;
+        const afterIdx = offset + match.length;
+        const nextChar = string[afterIdx] || '';
+
+        // Skip if word ends with apostrophe
+        if (/['’]$/.test(word)) return match;
+
+        // Skip if followed by punctuation
+        if (/^[-.,!?;:]/.test(nextChar)) return match;
+
+        // Return leading space (or line start), word + &nbsp; (no space after)
+        return leading + word + '\u00A0';
       });
     } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
       processTextNodes(child);
     }
   });
 }
+
+
+
 
 
 
