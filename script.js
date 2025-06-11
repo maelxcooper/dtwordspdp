@@ -16,28 +16,36 @@ $(document).ready(function () {
 function processTextNodes(node) {
   node.childNodes.forEach(child => {
     if (child.nodeType === Node.TEXT_NODE) {
-      child.nodeValue = child.nodeValue.replace(/(^|\s)([\p{L}’']{1,3})\s+/gu, (match, leading, word, offset, string) => {
+      child.nodeValue = child.nodeValue.replace(/\b([\p{L}']+)(\s?)/gu, (match, word, space, offset, string) => {
         const stripped = word.replace(/['’]/g, '');
+        if (stripped.length > 0 && stripped.length <= 3) {
+          const prevChar = offset > 0 ? string[offset - 1] : null;
+          const nextChar = string[offset + match.length] || null;
 
-        if (stripped.length === 0 || stripped.length > 3) return match;
+          // Skip if preceded or followed by hyphen (or dash)
+          if (prevChar === '-' || nextChar === '-') {
+            return match;
+          }
+          // Skip if word ends with apostrophe
+          if (/['’]$/.test(word)) {
+            return match;
+          }
 
-        const afterIdx = offset + match.length;
-        const nextChar = string[afterIdx] || '';
+          // NEW RULE: skip if no character follows (end of text node)
+          if (!space || space === '') {
+            return match;  // no nbsp if it's last word
+          }
 
-        // Skip if word ends with apostrophe
-        if (/['’]$/.test(word)) return match;
-
-        // Skip if followed by punctuation
-        if (/^[-.,!?;:]/.test(nextChar)) return match;
-
-        // Return leading space (or line start), word + &nbsp; (no space after)
-        return leading + word + '\u00A0';
+          return word + '\u00A0';
+        }
+        return match;
       });
     } else if (child.nodeType === Node.ELEMENT_NODE && !skipTags.includes(child.tagName)) {
       processTextNodes(child);
     }
   });
 }
+
 
 
 
