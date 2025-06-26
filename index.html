@@ -2,27 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Non-Breaking Space (Preserve HTML)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Breaking Space Tool</title>
+  <link rel="icon" href="assets/dtwords.svg" type="image/x-icon" id="favicon">
   <link rel="stylesheet" href="index.css">
 
 </head>
 <body>
 
+  <main>
   <div class="section">
     <label class="label">🔽 Input HTML:</label>
     <textarea id="inputHtml" placeholder="Paste your HTML block here..."></textarea>
+      <button id="processBtn">✨ Process HTML</button>
   </div>
 
-  <button id="processBtn">✨ Process HTML</button>
+
 
 
   <div class="section">
-    <label class="label">🔼 Output HTML (escaped):</label>
+    <label class="label">🔼 Output HTML</label>
     <div id="outputBox"></div>
-  </div>
-
-  <button id="copyBtn" style="display:none;">📋 Copy Output HTML</button>
+      <button id="copyBtn" style="display:none;">📋 Copy Output HTML</button>
   <button id="clearBtn">🧹 Clear</button>
+  </div>
+</main>
+
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="script.js"></script>

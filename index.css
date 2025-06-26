@@ -1,42 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
 
 :root {
-    --primaryFont: "Questrial", sans-serif;
+  --primaryFont: "Questrial", sans-serif;
 }
-    body {
-      font-family: var(--primaryFont);
-      padding: 20px;
-    }
-    textarea {
-      width: 90%;
-      min-height: 180px;
-      margin: 10px auto;
-      display: block;
-      font-family: monospace;
-      padding: 10px;
-    }
-    button {
-      display: block;
-      margin: 15px auto;
-      padding: 10px 25px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .section {
-      width: 90%;
-      margin: 20px auto;
-    }
-    .label {
-      font-weight: bold;
-      margin-bottom: 5px;
-      display: block;
-    }
-    #outputBox {
-      border: 1px solid #ccc;
-      background: #f9f9f9;
-      padding: 15px;
-      min-height: 180px;
-      white-space: pre-wrap;
-      font-family: monospace;
-      overflow-x: auto;
-    }
+body {
+  font-family: var(--primaryFont);
+  padding: 20px;
+  background: #fff;
+  font-size: 16px;
+}
+main {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+textarea {
+  width: 90%;
+  min-height: 180px;
+  font-family: var(--primaryFont);
+  margin: 10px auto;
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+button {
+  position: relative;
+  display: block;
+  width: min(13.75rem, 100%);
+  border: none;
+  margin: 2rem auto;
+  background: #32037c;
+  color: #fff;
+  padding: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+  border-radius: 5px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+  box-shadow: #3a0095 0px 7px 2px, #000 0px 8px 5px;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 1;
+}
+
+button:active {
+  top: 4px;
+  box-shadow: #3a0095 0px 3px 2px, #000 0px 3px 5px;
+}
+.section {
+  width: 100%;
+  margin: 20px auto;
+}
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  text-align: center;
+}
+#outputBox {
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  padding: 15px;
+  min-height: 180px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  overflow-x: auto;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+
+@media only screen and (max-width:1000px) {
+  main {
+  grid-template-columns: 1fr;
+}
+}
